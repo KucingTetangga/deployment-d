@@ -1,19 +1,27 @@
 from flask import *
 from mysql import connector
 import jsonify
-
+import pyodb
 app = Flask(__name__)
 
 #open connection
-db = connector.connect(
-    host    = 'kil-thedb.database.windows.net',
-    user    = 'lucy',
-    passwd  = 'Darklatias2000',
-    database= 'dbkiller'
+ import pyodbc
+    server = 'kil-thedb.database.windows.net'
+    database = 'dbkiller'
+    username = 'lucy'
+    password = 'Darlatias2000'   
+    driver= '{ODBC Driver 18 for SQL Server}'
+    
+    with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT TOP 3 ProductID, Name, ProductNumber FROM [SalesLT].[Product]")
+            row = cursor.fetchone()
+            while row:
+                print (str(row[0]) + " " + str(row[1]))
+                row = cursor.fetchone()
 )
-if db.is_connected():
-    @app.route('/')
-    def index():
+@app.route('/')
+def index():
         return print(jsonify({"message":'''
     Lord knows and I think I know it too sometimes
     Every time and they reachin' out for what's mine
