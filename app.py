@@ -83,4 +83,4 @@ def hapus_data(id):
     db.commit()
     return redirect(url_for('admin'))
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0' port=)
+    app.run(debug=True, host='0.0.0.0', port=8000)
